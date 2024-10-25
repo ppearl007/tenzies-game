@@ -1,11 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Die from "./components/Die";
 import "./App.css";
+import { data } from "../public/data";
 
 function App() {
-  const [allDice, setAllDice] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  // Goal is to try and roll 10 dice that are all the same
+  // you can click one or more die to hold it so it doesn't change on the next roll
+  // keep holding more of the same dice before roll till they're all the same
 
-  const diceElements = allDice.map((die) => <Die key={die} value={die} />);
+  const [allDice, setAllDice] = useState(data);
+
+  const randomGen = () => Math.floor(Math.random() * 6 + 1);
+
+  const handleClick = () => {
+    setAllDice((prevDice) =>
+      prevDice.map((die) => {
+        if (die.isSelected === false) {
+          return { ...die, value: randomGen() };
+        } else {
+          return { ...die };
+        }
+      })
+    );
+  };
+
+  const selectDie = (e, id) => {
+    e.stopPropagation();
+    setAllDice((prevDice) =>
+      prevDice.map((die) => {
+        if (die.id === id) {
+          return { ...die, isSelected: !die.isSelected };
+        } else {
+          return { ...die };
+        }
+      })
+    );
+  };
+
+  const diceElements = allDice.map((die) => (
+    <Die key={die.id} {...die} selectDie={selectDie} />
+  ));
 
   return (
     <main className="main">
@@ -15,7 +49,9 @@ function App() {
         current value between rolls.
       </p>
       <div className="dice-container">{diceElements}</div>
-      <button className="rolldice-button">Roll</button>
+      <button className="rolldice-button" onClick={handleClick}>
+        Roll
+      </button>
     </main>
   );
 }
