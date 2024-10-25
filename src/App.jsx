@@ -24,6 +24,10 @@ function App() {
     );
   };
 
+  useEffect(() => {
+    setAllDice(allDice.map((die) => ({ ...die, value: randomGen() })));
+  }, []);
+
   const selectDie = (e, id) => {
     e.stopPropagation();
     setAllDice((prevDice) =>
