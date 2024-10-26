@@ -9,8 +9,37 @@ function App() {
   // keep holding more of the same dice before roll till they're all the same
 
   const [allDice, setAllDice] = useState(data);
+  // const [buttonDisplay, setButtonDisplay] = useState("Roll");
 
   const randomGen = () => Math.floor(Math.random() * 6 + 1);
+
+  useEffect(() => {
+    setAllDice(allDice.map((die) => ({ ...die, value: randomGen() })));
+  }, []);
+
+  const buttonStatus = allDice.every((die) => die.value === allDice[1].value);
+
+  // alternative /imperative method to update the button is to use buttonUpdate()
+  // buttonDisplay state will have to be enabled and displayed in <button>
+  // button update method will then be called in selectDie
+
+  // const buttonUpdate = () => {
+  //   let arr = [];
+  //   for (let i = 0; i < 10; i++) {
+  //     if (i > 0) {
+  //       // console.log(i);
+  //       let j = i - 1;
+  //       allDice[i].value === allDice[j].value
+  //         ? arr.push(allDice[i].value)
+  //         : console.log(allDice[i].value);
+  //     }
+  //   }
+
+  //   if (arr.length === 9) {
+  //     setButtonDisplay("Reset Game");
+  //   }
+
+  // };
 
   const handleClick = () => {
     setAllDice((prevDice) =>
@@ -24,10 +53,6 @@ function App() {
     );
   };
 
-  useEffect(() => {
-    setAllDice(allDice.map((die) => ({ ...die, value: randomGen() })));
-  }, []);
-
   const selectDie = (e, id) => {
     e.stopPropagation();
     setAllDice((prevDice) =>
@@ -39,6 +64,8 @@ function App() {
         }
       })
     );
+
+    // buttonUpdate();
   };
 
   const diceElements = allDice.map((die) => (
@@ -54,7 +81,8 @@ function App() {
       </p>
       <div className="dice-container">{diceElements}</div>
       <button className="rolldice-button" onClick={handleClick}>
-        Roll
+        {buttonStatus ? "Restart Game" : "Roll"}
+        {/* {buttonDisplay} */}
       </button>
     </main>
   );

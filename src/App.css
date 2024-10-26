@@ -29,7 +29,6 @@ main {
 
 .die-face {
   font-family: Karla, sans-serif;
-  background-color: white;
   border-radius: 2px;
   display: flex;
   justify-content: center;
@@ -41,5 +40,13 @@ main {
 }
 
 .rolldice-button {
+  height: 50px;
+  width: 100px;
+  font-size: 1.2rem;
   margin: 2rem;
+  background-color: #5035ff;
+  border: none;
+  border-radius: 0.4rem;
+  color: white;
+  padding: 10px;
 }
